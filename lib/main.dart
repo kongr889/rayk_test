@@ -23,7 +23,7 @@ class SaMenuStatelessApp extends StatelessWidget {
         */
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SaMenuPage(title: 'SA Menu Main Page (7)'),
+      home: const SaMenuPage(title: 'SA Menu Main Page (9)'),
     );
   }
 }
