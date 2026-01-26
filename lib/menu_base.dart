@@ -24,7 +24,6 @@ class MenuBase {
   void setSubTitle(String subTitle) {
     _items.add(ItemClass(ItemType.subTitle, subTitle));
     developer.log('SubTitle: $subTitle', name: 'com.example.myapp.MenuBase'); 
-    print('SubTitle: $subTitle');
   }
 
   // Method to add a new item to the list
@@ -32,6 +31,5 @@ class MenuBase {
     final newItem = ItemClass(itemType, itemName);
     _items.add(newItem);
     developer.log('Added item: ${newItem.name} of type ${newItem.type}', name: 'com.example.myapp.MenuBase');
-    print('Added item: ${newItem.name} of type ${newItem.type}');
   }
 }
