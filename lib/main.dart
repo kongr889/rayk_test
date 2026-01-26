@@ -23,7 +23,7 @@ class SaMenuStatelessApp extends StatelessWidget {
         */
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SaMenuPage(title: 'SA Menu Main Page (5)'),
+      home: const SaMenuPage(title: 'SA Menu Main Page (7)'),
     );
   }
 }
@@ -99,7 +99,7 @@ class _SaMenuPageState extends State<SaMenuPage> {
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
             Text(
-              '$_counter',
+              '< ${_counter} >',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
