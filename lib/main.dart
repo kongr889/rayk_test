@@ -11,7 +11,8 @@ class SaMenuStatelessApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SA Menu',  // This is the application name on the mobile device system app list (not the Home Page icon name)
+      title:
+          'SA Menu', // This is the application name on the mobile device system app list (not the Home Page icon name)
       theme: ThemeData(
         /* This is the theme of your application.
            TRY THIS: Try running your application with "flutter run". You'll see
@@ -23,7 +24,7 @@ class SaMenuStatelessApp extends StatelessWidget {
         */
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SaMenuPage(title: 'SA Menu Main Page (11)'),
+      home: const SaMenuPage(title: 'SA Menu Main Page (13)'),
     );
   }
 }
@@ -99,7 +100,7 @@ class _SaMenuPageState extends State<SaMenuPage> {
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
             Text(
-              '< ${_counter} >',
+              '< $_counter >',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
