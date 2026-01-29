@@ -24,7 +24,7 @@ class SaMenuStatelessApp extends StatelessWidget {
         */
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SaMenuPage(title: 'SA Menu Main Page (15)'),
+      home: const SaMenuPage(title: 'SA Menu (15)... by Raymond Kong'),
     );
   }
 }
@@ -110,7 +110,9 @@ class _SaMenuPageState extends State<SaMenuPage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat, // This will center the FAB
     );
   }
 }
