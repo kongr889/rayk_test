@@ -15,9 +15,7 @@ class ItemDef {
   ItemDef.withoutFunction(this.name, this.type) : func = null;
 }
 
-Scaffold makeMenu(BuildContext context) {
-
-
+Scaffold makeMenu(BuildContext context, String title) {
   return Scaffold(
     appBar: AppBar(
       // TRY THIS: Try changing the color here to a specific color (to
@@ -26,7 +24,7 @@ Scaffold makeMenu(BuildContext context) {
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       // Here we take the value from the SaMenuPage object that was created by
       // the App.build method, and use it to set our appbar title.
-      title: Text("todo"),
+      title: Text(title),
     ),
     body: Center(
       // Center is a layout widget. It takes a single child and positions it
