@@ -30,7 +30,10 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
   developer.log('item count in items is <${items.length}>');
 
   Widget mainWidget = Center(
-    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: items),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: items),
   );
 
   return Scaffold(
