@@ -25,7 +25,12 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
       },
       child: Text(aItem.name),
     );
-    items.add(aButton);
+    items.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: aButton,
+      ),
+    );
   }
   developer.log('item count in items is <${items.length}>');
 
@@ -33,7 +38,8 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: items),
+      children: items,
+    ),
   );
 
   return Scaffold(
