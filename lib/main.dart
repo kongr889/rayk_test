@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'menu_base.dart';
+// import 'dart:developer' as developer;
 
 void main() {
   runApp(const SaMenuStatelessApp());
@@ -25,7 +26,7 @@ class SaMenuStatelessApp extends StatelessWidget {
         */
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SaMenuPage(title: 'SA Menu (18)... by Raymond Kong'),
+      home: const SaMenuPage(title: 'SA Menu (21)... by Raymond Kong'),
     );
   }
 }
@@ -48,18 +49,17 @@ class SaMenuPage extends StatefulWidget {
   State<SaMenuPage> createState() => _SaMenuPageState();
 }
 
-List<ItemDef> _menuDef = [ItemDef.withoutFunction('abc', ItemType.subTitle)];
+List<ItemDef> _menuDef = [
+  ItemDef.withoutFunction('abc', ItemType.subTitle),
+  ItemDef.withoutFunction('xyz', ItemType.subTitle),
+  ItemDef.withoutFunction('ABC', ItemType.subTitle),
+];
 
 class _SaMenuPageState extends State<SaMenuPage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return makeMenu(context, widget.title);
+    // This method is rerun every time setState is called
+    return makeMenu(context, widget.title, _menuDef);
   }
 }
 

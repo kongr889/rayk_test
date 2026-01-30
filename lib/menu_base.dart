@@ -15,7 +15,24 @@ class ItemDef {
   ItemDef.withoutFunction(this.name, this.type) : func = null;
 }
 
-Scaffold makeMenu(BuildContext context, String title) {
+Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
+  List<Widget> items = [];
+
+  for (var aItem in menuDef) {
+    Widget aButton = ElevatedButton(
+      onPressed: () {
+        // Your action here
+      },
+      child: Text('$aItem.name'),
+    );
+    items.add(aButton);
+  }
+  developer.log('item count in items is <${items.length}>');
+
+  Widget mainWidget = Center(
+    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: items),
+  );
+
   return Scaffold(
     appBar: AppBar(
       // TRY THIS: Try changing the color here to a specific color (to
@@ -29,7 +46,8 @@ Scaffold makeMenu(BuildContext context, String title) {
     body: Center(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
-      child: Column(
+      child: mainWidget,
+      /* Column(
         // Column is also a layout widget. It takes a list of children and
         // arranges them vertically. By default, it sizes itself to fit its
         // children horizontally, and tries to be as tall as its parent.
@@ -46,12 +64,9 @@ Scaffold makeMenu(BuildContext context, String title) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Text('You have pushed the button this many times:'),
-          Text(
-            '< todo >',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
+          Text('< todo >', style: Theme.of(context).textTheme.headlineMedium),
         ],
-      ),
+      ), */
     ),
   );
 }
