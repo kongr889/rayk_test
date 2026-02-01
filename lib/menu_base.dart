@@ -6,13 +6,13 @@ enum ItemType { subTitle, function }
 class ItemDef {
   final String name;
   final ItemType type;
-  final Function? func;
+  final StatelessWidget? widget;
 
   // The primary, unnamed constructor
-  ItemDef(this.name, this.type, this.func);
+  ItemDef(this.name, this.type, this.widget);
 
-  // A named constructor for items that don't have a function
-  ItemDef.withoutFunction(this.name, this.type) : func = null;
+  // A named constructor for items that don't correspond to another functional screen/ widget.
+  ItemDef.withoutFunction(this.name, this.type) : widget = null;
 }
 
 Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
@@ -22,12 +22,10 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
     Widget aButton = ElevatedButton(
       onPressed: () {
         // todo: need to add more logic to complete the work.
-/*
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const DetailScreen()),
+          MaterialPageRoute(builder: (context) => aItem.widget!),
         );
-*/
       },
       child: Text(aItem.name),
     );
@@ -82,8 +80,8 @@ class MenuBase {
   }
 
   // Method to add a new item to the list
-  void addItem(String itemName, Function func) {
-    final newItem = ItemDef(itemName, ItemType.function, func);
+  void addItem(String itemName, StatelessWidget widget) {
+    final newItem = ItemDef(itemName, ItemType.function, widget);
     _items.add(newItem);
     developer.log(
       'Added item: ${newItem.name} of type ${newItem.type}',
