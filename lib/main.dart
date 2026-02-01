@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'menu_base.dart';
-// import 'dart:developer' as developer;
+import 'dart:developer' as developer;
+import 'package:geolocator/geolocator.dart';
 
 void main() {
   runApp(const SaMenuStatelessApp());
@@ -15,18 +16,11 @@ class SaMenuStatelessApp extends StatelessWidget {
     return MaterialApp(
       title:
           'SA Menu', // This is the application name on the mobile device system app list (not the Home Page icon name)
-      theme: ThemeData(
-        /* This is the theme of your application.
-           TRY THIS: Try running your application with "flutter run". You'll see
-           the application has a purple toolbar. Then, without quitting the app,
-           try changing the seedColor in the colorScheme below to Colors.green
-           and then invoke "hot reload" (save your changes or press the "hot
-           reload" button in a Flutter-supported IDE, or press "r" if you used
-           the command line to start the app).
-        */
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const SaMenuPage(title: 'SA Menu (21)... by Raymond Kong'),
+      // theme: appTheme,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      home: const SaMenuPage(title: 'SA Menu (22)... by Raymond Kong'),
     );
   }
 }
@@ -55,8 +49,30 @@ List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];
 
+AppBar appBarForStdFunctional(BuildContext context, String functionalTitle) {
+  return AppBar(
+    title: Text(functionalTitle),
+    // backgroundColor: Theme.of(context).colorScheme.surface,
+    leading: IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.pop(context); // Goes back to the previous screen
+      },
+    ),
+    // The 'actions' list appears on the right
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.settings),
+        onPressed: () {
+          developer.log("todo: need further work to go settings.");
+        },
+      ),
+    ],
+  );
+}
+
 /*
-    Screen for GeolocationDemo.... todo: need to make further change.
+    Screen for GeolocatorDemo.... todo: need to make further change.
 */
 class MenuItemGeolocatorDemo extends StatelessWidget {
   const MenuItemGeolocatorDemo({super.key, required this.functionalTitle});
@@ -65,21 +81,20 @@ class MenuItemGeolocatorDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title:
-          'SA Menu', // This is the application name on the mobile device system app list (not the Home Page icon name)
-      theme: ThemeData(
-        /* This is the theme of your application.
-           TRY THIS: Try running your application with "flutter run". You'll see
-           the application has a purple toolbar. Then, without quitting the app,
-           try changing the seedColor in the colorScheme below to Colors.green
-           and then invoke "hot reload" (save your changes or press the "hot
-           reload" button in a Flutter-supported IDE, or press "r" if you used
-           the command line to start the app).
-        */
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const SaMenuPage(title: 'SA Menu (xx)... by Raymond Kong'),
+    return Scaffold(
+      appBar: appBarForStdFunctional(context, functionalTitle),
+      body: Container(
+        margin: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('todo 1111111111'),
+            ),
+          ],
+        ),
+//        child: mainWidget,
+        ),
     );
   }
 }

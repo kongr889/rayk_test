@@ -15,6 +15,11 @@ class ItemDef {
   ItemDef.withoutFunction(this.name, this.type) : widgetBuilder = null;
 }
 
+ThemeData appTheme = ThemeData(
+  // This is the default theme used by all screens in this application
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
+);
+
 Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
   List<Widget> items = [];
 
@@ -59,10 +64,6 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
 
   return Scaffold(
     appBar: AppBar(
-      // TRY THIS: Try changing the color here to a specific color (to
-      // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-      // change color while the other colors stay the same.
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       // Here we take the value from the SaMenuPage object that was created by
       // the App.build method, and use it to set our appbar title.
       title: Text(title),
