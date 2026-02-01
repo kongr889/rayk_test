@@ -21,7 +21,13 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
   for (var aItem in menuDef) {
     Widget aButton = ElevatedButton(
       onPressed: () {
-        // Your action here
+        // todo: need to add more logic to complete the work.
+/*
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DetailScreen()),
+        );
+*/
       },
       child: Text(aItem.name),
     );
