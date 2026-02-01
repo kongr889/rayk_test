@@ -51,7 +51,7 @@ class SaMenuPage extends StatefulWidget {
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('External Packages basic tests', ItemType.subTitle),
-  ItemDef('Geolocator demo (2)', ItemType.functional, (name) => MenuItemGeolocatorDemo(title: name),),
+  ItemDef('Geolocator demo (2)', ItemType.functional, (name) => MenuItemGeolocatorDemo(functionalTitle: name),),
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];
 
@@ -59,15 +59,15 @@ List<ItemDef> _menuDef = [
     Screen for GeolocationDemo.... todo: need to make further change.
 */
 class MenuItemGeolocatorDemo extends StatelessWidget {
-  const MenuItemGeolocatorDemo({super.key, required this.title});
+  const MenuItemGeolocatorDemo({super.key, required this.functionalTitle});
 
-  final String title;
+  final String functionalTitle;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:
-          'SA Menu - $title', // This is the application name on the mobile device system app list (not the Home Page icon name)
+          'SA Menu', // This is the application name on the mobile device system app list (not the Home Page icon name)
       theme: ThemeData(
         /* This is the theme of your application.
            TRY THIS: Try running your application with "flutter run". You'll see
