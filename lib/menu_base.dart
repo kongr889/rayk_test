@@ -52,7 +52,10 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
       // the App.build method, and use it to set our appbar title.
       title: Text(title),
     ),
-    body: mainWidget,
+    body: Container(
+      margin: EdgeInsets.all(20),
+      child: mainWidget,
+      ),
   );
 }
 
