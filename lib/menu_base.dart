@@ -25,10 +25,15 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
       },
       child: Text(aItem.name),
     );
+    Widget aSubTitle = Text(
+      aItem.name,
+      style: TextStyle(fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+    );
     items.add(
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: aButton,
+        child: (aItem.type == ItemType.subTitle) ? aSubTitle : aButton,
       ),
     );
   }
