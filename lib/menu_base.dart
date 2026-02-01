@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-enum ItemType { subTitle, function }
+enum ItemType { subTitle, functional }
 
 class ItemDef {
   final String name;
   final ItemType type;
-  final StatelessWidget? widget;
+  final Widget? widget;
 
   // The primary, unnamed constructor
   ItemDef(this.name, this.type, this.widget);
@@ -19,25 +19,30 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
   List<Widget> items = [];
 
   for (var aItem in menuDef) {
-    Widget aButton = ElevatedButton(
-      onPressed: () {
-        // todo: need to add more logic to complete the work.
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => aItem.widget!),
-        );
-      },
-      child: Text(aItem.name),
-    );
-    Widget aSubTitle = Text(
-      aItem.name,
-      style: TextStyle(fontWeight: FontWeight.bold),
-      textAlign: TextAlign.center,
-    );
+    Widget aWidget; // this will hold either the Botton widget or Text widget.
+
+    if (aItem.type == ItemType.functional) {
+      aWidget = ElevatedButton(
+        onPressed: () {
+          developer.log('switching to a new functional screen for <${aItem.name}>');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => aItem.widget!),
+          );
+        },
+        child: Text(aItem.name),
+      );
+    } else {
+      aWidget = Text(
+        aItem.name,
+        style: TextStyle(fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      );
+    }
     items.add(
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: (aItem.type == ItemType.subTitle) ? aSubTitle : aButton,
+        child: aWidget,
       ),
     );
   }
@@ -81,7 +86,7 @@ class MenuBase {
 
   // Method to add a new item to the list
   void addItem(String itemName, StatelessWidget widget) {
-    final newItem = ItemDef(itemName, ItemType.function, widget);
+    final newItem = ItemDef(itemName, ItemType.functional, widget);
     _items.add(newItem);
     developer.log(
       'Added item: ${newItem.name} of type ${newItem.type}',

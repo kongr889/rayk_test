@@ -51,7 +51,7 @@ class SaMenuPage extends StatefulWidget {
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('External Packages basic tests', ItemType.subTitle),
-  ItemDef('Geolocator demo (2)', ItemType.function, MenuItemGeolocatorDemo()),
+  ItemDef('Geolocator demo (2)', ItemType.functional, MenuItemGeolocatorDemo()),
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];
 
