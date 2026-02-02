@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'menu_base.dart';
 import 'dart:developer' as developer;
 import 'package:geolocator/geolocator.dart';
+import 'menu_base.dart';
 
 void main() {
   runApp(const SaMenuStatelessApp());
@@ -20,7 +20,7 @@ class SaMenuStatelessApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: const SaMenuPage(title: 'SA Menu (22)... by Raymond Kong'),
+      home: const SaMenuPage(title: 'SA Menu (23)... by Raymond Kong'),
     );
   }
 }
@@ -45,7 +45,11 @@ class SaMenuPage extends StatefulWidget {
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('External Packages basic tests', ItemType.subTitle),
-  ItemDef('Geolocator demo (2)', ItemType.functional, (name) => MenuItemGeolocatorDemo(functionalTitle: name),),
+  ItemDef(
+    'Geolocator demo (2)',
+    ItemType.functional,
+    (name) => MenuItemGeolocatorDemo(functionalTitle: name),
+  ),
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];
 
@@ -74,27 +78,55 @@ AppBar appBarForStdFunctional(BuildContext context, String functionalTitle) {
 /*
     Screen for GeolocatorDemo.... todo: need to make further change.
 */
+class Location {
+  final double latitude;
+  final double longitude;
+
+  Location(this.latitude, this.longitude);
+}
+
 class MenuItemGeolocatorDemo extends StatelessWidget {
   const MenuItemGeolocatorDemo({super.key, required this.functionalTitle});
 
   final String functionalTitle;
 
+  ({Position? position, String? errorString}) getLocation() async {
+    try {
+      // Define LocationSettings
+      LocationSettings locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy
+            .low, // Use the accuracy enum within LocationSettings
+        distanceFilter: 100, // Optional: specify a distance filter
+      );
+
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: locationSettings,
+      );
+      developer.log('Info: (todo) current position is <$position>');
+      return (position: position, errorString: null);
+    } catch (e) {
+      String errorString =
+          'Error: (todo) unable to get current location. Exception: $e';
+      developer.log(errorString);
+      return (position: null, errorSting: errorString);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final (Position position?, String errorString?) = getLocation();
+
     return Scaffold(
       appBar: appBarForStdFunctional(context, functionalTitle),
       body: Container(
         margin: EdgeInsets.all(20),
         child: Row(
           children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('todo 1111111111'),
-            ),
+            ElevatedButton(onPressed: () {}, child: Text('todo 1111111111')),
           ],
         ),
-//        child: mainWidget,
-        ),
+        //        child: mainWidget,
+      ),
     );
   }
 }
