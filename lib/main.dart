@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 import 'package:geolocator/geolocator.dart';
 import 'menu_base.dart';
+// only import related items involved in this menu
+import 'item_external_packages_basic_menu.dart';
 
 void main() {
   runApp(const SaMenuStatelessApp());
@@ -20,7 +22,7 @@ class SaMenuStatelessApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      home: const SaMenuPage(title: 'SA Menu (23)... by Raymond Kong'),
+      home: const SaMenuPage(title: 'SA Menu (24)... by Raymond Kong'),
     );
   }
 }
@@ -49,6 +51,11 @@ List<ItemDef> _menuDef = [
     'Geolocator demo (2)',
     ItemType.functional,
     (name) => MenuItemGeolocatorDemo(functionalTitle: name),
+  ),
+  ItemDef(
+    'External Packages Basic Demos',
+    ItemType.functional,
+    (name) => ItemExternalPackagesBasicMenu(functionalTitle: name),
   ),
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];

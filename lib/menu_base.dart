@@ -75,6 +75,24 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
   );
 }
 
+abstract class ItemMenuBase extends StatelessWidget {
+
+  const ItemMenuBase({
+    super.key,
+    required this.functionalTitle,
+    required this.menuDef
+  });
+
+  final String functionalTitle;
+  final List<ItemDef> menuDef;
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called
+    return makeMenu(context, functionalTitle, menuDef);
+  }
+}
+
 class MenuBase {
   final String title;
   final List<ItemDef> _items = []; // A growable list of items.
