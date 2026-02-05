@@ -38,6 +38,8 @@ dependencies:
   go_router: ^17.0.1
   geolocator: ^14.0.2
   path_provider: ^2.1.5
+  disk_space_2: ^1.0.12
+  storage_info: ^1.0.0
 
 dev_dependencies:
   flutter_test:
