@@ -2,7 +2,7 @@ import 'menu_base.dart';
 import 'item_geo_locator_demo.dart';
 
 List<ItemDef> _menuDef = [
-  ItemDef.withoutFunction('something something', ItemType.subTitle),
+  ItemDef.withoutFunction('Simple Packages', ItemType.subTitle),
   ItemDef(
     'Geolocator demo (2)',
     ItemType.functional,

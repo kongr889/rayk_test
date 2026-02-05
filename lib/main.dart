@@ -44,7 +44,7 @@ class SaMenuPage extends StatefulWidget {
 }
 
 List<ItemDef> _menuDef = [
-  ItemDef.withoutFunction('External Packages basic tests', ItemType.subTitle),
+  ItemDef.withoutFunction('Top Level Menu', ItemType.subTitle),
   ItemDef(
     'External Packages Basic Demos',
     ItemType.functional,
