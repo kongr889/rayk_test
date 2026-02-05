@@ -93,6 +93,28 @@ abstract class ItemMenuBase extends StatelessWidget {
   }
 }
 
+AppBar appBarForStdFunctional(BuildContext context, String functionalTitle) {
+  return AppBar(
+    title: Text(functionalTitle),
+    // backgroundColor: Theme.of(context).colorScheme.surface,
+    leading: IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.pop(context); // Goes back to the previous screen
+      },
+    ),
+    // The 'actions' list appears on the right
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.settings),
+        onPressed: () {
+          developer.log("todo: need further work to go settings.");
+        },
+      ),
+    ],
+  );
+}
+
 class MenuBase {
   final String title;
   final List<ItemDef> _items = []; // A growable list of items.
