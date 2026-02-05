@@ -1,4 +1,5 @@
 import 'menu_base.dart';
+import 'item_pop_until_first.dart';
 import 'item_geo_locator_demo.dart';
 
 List<ItemDef> _menuDef = [
@@ -7,6 +8,11 @@ List<ItemDef> _menuDef = [
     'Geolocator demo (2)',
     ItemType.functional,
     (name) => MenuItemGeolocatorDemo(functionalTitle: name),
+  ),
+  ItemDef(
+    'Jump to top menu',
+    ItemType.functional,
+    (name) => MenuItemPopUntilFirst(functionalTitle: name),
   ),
   ItemDef.withoutFunction('*** End ***', ItemType.subTitle),
 ];
