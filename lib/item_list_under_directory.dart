@@ -6,6 +6,12 @@ import 'package:path_provider/path_provider.dart';
 import 'menu_base.dart';
 import 'menu_utils.dart';
 
+/*
+TODO: This function is still under development, by transforming from item_path_provider_demo.dart
+      doing it little by little.
+      The goal is output to a full-feature scrollable Text fields.
+*/
+
 Future<
   ({
     Directory tempDir,
@@ -43,8 +49,8 @@ _getStorageInfo() async {
   );
 }
 
-class MenuItemPathProviderDemo extends StatelessWidget {
-  const MenuItemPathProviderDemo({super.key, required this.functionalTitle});
+class MenuItemListUnderDirectory extends StatelessWidget {
+  const MenuItemListUnderDirectory({super.key, required this.functionalTitle});
 
   final String functionalTitle;
 
@@ -84,6 +90,32 @@ class MenuItemPathProviderDemo extends StatelessWidget {
 appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
 appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
 externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>''',
+                        ),
+                      ),
+                      Scrollbar(   // vertical scrollbar
+                        thumbVisibility: true,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Scrollbar(   // Horizontal Scrollbar
+                            thumbVisibility: true,
+                            notificationPredicate: (notif) => notif.depth == 1,  // targets the horizontal scroll
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  '''longContent-todo
+                                  longContent-todo
+                                  longContent-todo''',
+                                  softWrap: false,
+                                  style: const TextStyle(
+                                    fontFamily: 'Courier',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
