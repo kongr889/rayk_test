@@ -81,7 +81,7 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                 } else {
                   final retRec = snapshot.data!;
                   const int lenToExtract = 25;
-                  return Row(
+                  return Column(
                     children: [
                       ElevatedButton(
                         onPressed: () {},
@@ -92,25 +92,90 @@ appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
 externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>''',
                         ),
                       ),
-                      Scrollbar(   // vertical scrollbar
+                      Scrollbar(
+                        // vertical scrollbar
                         thumbVisibility: true,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          child: Scrollbar(   // Horizontal Scrollbar
+                          child: Scrollbar(
+                            // Horizontal Scrollbar
                             thumbVisibility: true,
-                            notificationPredicate: (notif) => notif.depth == 1,  // targets the horizontal scroll
+                            notificationPredicate: (notif) =>
+                                notif.depth ==
+                                1, // targets the horizontal scroll
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  '''longContent-todo
-                                  longContent-todo
-                                  longContent-todo''',
+                                  '''tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
+appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
+appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
+externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>
+longContent-todo
+longContent-todo 1111111111111111 22222222222222 33333333333333333333 4444444444444444444444
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo 1111111111111111 22222222222222 33333333333333333333 4444444444444444444444
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo 1111111111111111 22222222222222 33333333333333333333 4444444444444444444444
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo 1111111111111111 22222222222222 33333333333333333333 4444444444444444444444
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo 1111111111111111 22222222222222 33333333333333333333 4444444444444444444444
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo
+longContent-todo''',
                                   softWrap: false,
                                   style: const TextStyle(
                                     fontFamily: 'Courier',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),
