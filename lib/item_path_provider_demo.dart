@@ -5,7 +5,15 @@ import 'package:path_provider/path_provider.dart';
 //import 'package:storage_info/storage_info.dart';
 import 'menu_base.dart';
 
-Future<(Directory, Directory, Directory, Directory)> _getStorageInfo() async {
+Future<
+  ({
+    Directory tempDir,
+    Directory appDocDir,
+    Directory appSupportDir,
+    Directory externalDir,
+  })
+>
+_getStorageInfo() async {
   // 1. Get Directory Paths
   Directory tempDir = await getTemporaryDirectory();
   Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -26,7 +34,12 @@ Future<(Directory, Directory, Directory, Directory)> _getStorageInfo() async {
   print('Total Space: $totalSpace MB');
   print('Usage: ${(1 - (freeSpace / totalSpace)) * 100}%');
 */
-  return (tempDir, appDocDir, appSupportDir, externalDir);
+  return (
+    tempDir: tempDir,
+    appDocDir: appDocDir,
+    appSupportDir: appSupportDir,
+    externalDir: externalDir,
+  );
 }
 
 class MenuItemPathProviderDemo extends StatelessWidget {
@@ -40,28 +53,38 @@ class MenuItemPathProviderDemo extends StatelessWidget {
       appBar: appBarForStdFunctional(context, functionalTitle),
       body: Container(
         margin: EdgeInsets.all(20),
-        child: FutureBuilder<(Directory, Directory, Directory, Directory)>(
-          future: _getStorageInfo(),
-          builder: (context, snapshot) {
-            // 3. Handle the "Loading" state
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            // 4. Hanbdle errors
-            else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
-            } else {
-              return Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('''${snapshot.data}'''),
-                  ),
-                ],
-              );
-            }
-          },
-        ),
+        child:
+            FutureBuilder<
+              ({
+                Directory tempDir,
+                Directory appDocDir,
+                Directory appSupportDir,
+                Directory externalDir,
+              })
+            >(
+              future: _getStorageInfo(),
+              builder: (context, snapshot) {
+                // 3. Handle the "Loading" state
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+                // 4. Hanbdle errors
+                else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else {
+                  return Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          '''snapshot classname is <${snapshot.data.runtimeType.toString()}>''',
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
       ),
     );
   }
