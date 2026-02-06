@@ -1,13 +1,19 @@
 import 'menu_base.dart';
 import 'item_pop_until_first.dart';
 import 'item_geo_locator_demo.dart';
+import 'item_path_provider_demo.dart';
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('Simple Packages', ItemType.subTitle),
   ItemDef(
-    'Geolocator demo (2)',
+    'Geolocator demo',
     ItemType.functional,
     (name) => MenuItemGeolocatorDemo(functionalTitle: name),
+  ),
+  ItemDef(
+    'Path Provider demo',
+    ItemType.functional,
+    (name) => MenuItemPathProviderDemo(functionalTitle: name),
   ),
   ItemDef(
     'Jump to top menu',
