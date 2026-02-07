@@ -101,7 +101,7 @@ appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
 externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>''',
                                     softWrap: false,
                                     style: const TextStyle(
-                                      fontFamily: 'Courier',
+                                      fontFamily: 'monospace',
                                       fontSize: 12,
                                     ),
                                   ),
