@@ -43,7 +43,7 @@ _getStorageInfo() async {
   print('Usage: ${(1 - (freeSpace / totalSpace)) * 100}%');
 */
 
-  Directory dirToList = tempDir;
+  Directory dirToList = tempDir.parent.parent;
 
   List<FileSystemEntity> fileList = await dirToList
       .list(recursive: false)
