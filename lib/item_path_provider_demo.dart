@@ -74,16 +74,41 @@ class MenuItemPathProviderDemo extends StatelessWidget {
                   return Text("Error: ${snapshot.error}");
                 } else {
                   final retRec = snapshot.data!;
-                  const int lenToExtract = 25;
-                  return Row(
+                  const int lenToExtract = 1000;
+                  return Column(
                     children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          '''tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
+                      Expanded(
+                        child: Scrollbar(
+                          // vertical scrollbar
+                          thumbVisibility: true,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Scrollbar(
+                              // Horizontal Scrollbar
+                              thumbVisibility: true,
+                              notificationPredicate: (notif) =>
+                                  notif.depth ==
+                                  1, // targets the horizontal scroll
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    '''
+tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
 appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
 appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
 externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>''',
+                                    softWrap: false,
+                                    style: const TextStyle(
+                                      fontFamily: 'Courier',
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
