@@ -11,7 +11,7 @@ Future<
     Directory tempDir,
     Directory appDocDir,
     Directory appSupportDir,
-    Directory externalDir,
+    Directory? externalDir,
   })
 >
 _getStorageInfo() async {
@@ -26,9 +26,6 @@ _getStorageInfo() async {
   double totalSpace = await StorageInfo.getTotalDiskSpace;
   */
 
-  developer.log('Documents Path: <${appDocDir.path}>');
-  developer.log('Temp Path: ${tempDir.path}>');
-  developer.log('Support Path: ${appSupportDir.path}>');
   developer.log('External Path: ${externalDir!.path}>');
   /*
   print('Free Space: $freeSpace MB');
@@ -60,7 +57,7 @@ class MenuItemPathProviderDemo extends StatelessWidget {
                 Directory tempDir,
                 Directory appDocDir,
                 Directory appSupportDir,
-                Directory externalDir,
+                Directory? externalDir,
               })
             >(
               future: _getStorageInfo(),
@@ -98,7 +95,7 @@ class MenuItemPathProviderDemo extends StatelessWidget {
 tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
 appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
 appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
-externalDir is <${retRec.externalDir.path.takeLast(lenToExtract)}>''',
+externalDir is <${retRec.externalDir!.path.takeLast(lenToExtract)}>''',
                                     softWrap: false,
                                     style: const TextStyle(
                                       fontFamily: 'monospace',
