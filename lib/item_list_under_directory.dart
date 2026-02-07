@@ -17,6 +17,7 @@ Future<
     Directory tempDir,
     Directory appDocDir,
     Directory appSupportDir,
+    Directory? dirToList,
     Directory? externalDir,
     List<FileSystemEntity> fileList,
   })
@@ -33,18 +34,28 @@ _getStorageInfo() async {
   double totalSpace = await StorageInfo.getTotalDiskSpace;
   */
 
+  // As a workaround, the following make sure externalDir is not null.
+  // todo: should change it to a more professional way.
   developer.log('External Path: ${externalDir!.path}>');
   /*
   print('Free Space: $freeSpace MB');
   print('Total Space: $totalSpace MB');
   print('Usage: ${(1 - (freeSpace / totalSpace)) * 100}%');
 */
+
+  Directory dirToList = tempDir;
+
+  List<FileSystemEntity> fileList = await dirToList
+      .list(recursive: false)
+      .toList();
+
   return (
     tempDir: tempDir,
     appDocDir: appDocDir,
     appSupportDir: appSupportDir,
     externalDir: externalDir,
-    fileList: List<FileSystemEntity>.empty(),
+    dirToList: dirToList,
+    fileList: fileList,
   );
 }
 
@@ -66,6 +77,7 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                 Directory appDocDir,
                 Directory appSupportDir,
                 Directory? externalDir,
+                Directory? dirToList,
                 List<FileSystemEntity> fileList,
               })
             >(
@@ -80,7 +92,11 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                   return Text("Error: ${snapshot.error}");
                 } else {
                   final retRec = snapshot.data!;
-                  const int lenToExtract = 1000;
+                  const int lenToExtract =
+                      1000; // set this to large value, after implementing scrollbars to allow full visual.
+                  final String allPaths = retRec.fileList
+                      .map((file) => file.path)
+                      .join('\n');
                   return Column(
                     children: [
                       Expanded(
@@ -104,7 +120,10 @@ class MenuItemListUnderDirectory extends StatelessWidget {
 tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
 appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
 appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
-externalDir is <${retRec.externalDir!.path.takeLast(lenToExtract)}>''',
+externalDir is <${retRec.externalDir!.path.takeLast(lenToExtract)}>
+
+Content in directory <${retRec.dirToList!.path.takeLast(lenToExtract)}>
+$allPaths''',
                                     softWrap: false,
                                     style: const TextStyle(
                                       fontFamily: 'monospace',
