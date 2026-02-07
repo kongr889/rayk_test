@@ -18,6 +18,7 @@ Future<
     Directory appDocDir,
     Directory appSupportDir,
     Directory externalDir,
+    List<FileSystemEntity> fileList,
   })
 >
 _getStorageInfo() async {
@@ -46,6 +47,7 @@ _getStorageInfo() async {
     appDocDir: appDocDir,
     appSupportDir: appSupportDir,
     externalDir: externalDir,
+    fileList: List<FileSystemEntity>.empty(),
   );
 }
 
@@ -67,6 +69,7 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                 Directory appDocDir,
                 Directory appSupportDir,
                 Directory externalDir,
+                List<FileSystemEntity> fileList,
               })
             >(
               future: _getStorageInfo(),
