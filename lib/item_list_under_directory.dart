@@ -54,6 +54,7 @@ _getStorageInfo() async {
 */
 
   Directory dirToList = dcimDir;
+  // Directory dirToList = tempDir.parent.parent;
 
   var status = await Permission.manageExternalStorage.status;
   if (status.isDenied) {
