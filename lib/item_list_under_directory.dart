@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
+// import 'dart:developer' as developer;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 //import 'package:storage_info/storage_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'menu_base.dart';
 import 'menu_utils.dart';
 
@@ -17,9 +18,14 @@ Future<
     Directory tempDir,
     Directory appDocDir,
     Directory appSupportDir,
-    Directory? dirToList,
     Directory? externalDir,
+    Directory downloadDir,
+    Directory pictureDir,
+    Directory cameraDir,
+    Directory? dirToList,
+    String permissionOnDir,
     List<FileSystemEntity> fileList,
+    int fileCount,
   })
 >
 _getStorageInfo() async {
@@ -28,6 +34,9 @@ _getStorageInfo() async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   Directory appSupportDir = await getApplicationSupportDirectory();
   Directory? externalDir = await getExternalStorageDirectory(); // Android only
+  Directory downloadDir = Directory('/storage/emulated/0/Download');
+  Directory pictureDir = Directory('/storage/emulated/0/Pictures');
+  Directory dcimDir = Directory('/storage/emulated/0/DCIM');
 
   /* 2. Get Space Information (returns values in MB)
   double freeSpace = await StorageInfo.getFreeDiskSpace;
@@ -36,26 +45,44 @@ _getStorageInfo() async {
 
   // As a workaround, the following make sure externalDir is not null.
   // todo: should change it to a more professional way.
-  developer.log('External Path: ${externalDir!.path}>');
+  // developer.log('External Path: ${externalDir!.path}>');
+
   /*
   print('Free Space: $freeSpace MB');
   print('Total Space: $totalSpace MB');
   print('Usage: ${(1 - (freeSpace / totalSpace)) * 100}%');
 */
 
-  Directory dirToList = tempDir.parent.parent;
+  Directory dirToList = dcimDir;
+
+  var status = await Permission.manageExternalStorage.status;
+  if (status.isDenied) {
+    status = await Permission.manageExternalStorage.request();
+  }
+  String permissionOnDir = '';
+  if (status.isGranted) {
+    permissionOnDir = 'Full storage access granted';
+  } else {
+    permissionOnDir = 'Full storage access denied';
+  }
 
   List<FileSystemEntity> fileList = await dirToList
-      .list(recursive: false)
+      .list(recursive: true)
       .toList();
+  int fileCount = fileList.length;
 
   return (
     tempDir: tempDir,
     appDocDir: appDocDir,
     appSupportDir: appSupportDir,
     externalDir: externalDir,
+    downloadDir: downloadDir,
+    pictureDir: pictureDir,
+    cameraDir: dcimDir,
     dirToList: dirToList,
+    permissionOnDir: permissionOnDir,
     fileList: fileList,
+    fileCount: fileCount,
   );
 }
 
@@ -77,8 +104,13 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                 Directory appDocDir,
                 Directory appSupportDir,
                 Directory? externalDir,
+                Directory downloadDir,
+                Directory pictureDir,
+                Directory cameraDir,
                 Directory? dirToList,
+                String permissionOnDir,
                 List<FileSystemEntity> fileList,
+                int fileCount,
               })
             >(
               future: _getStorageInfo(),
@@ -121,8 +153,10 @@ tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
 appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
 appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
 externalDir is <${retRec.externalDir!.path.takeLast(lenToExtract)}>
+downloadDir is <${retRec.downloadDir.path.takeLast(lenToExtract)}>
 
-Content in directory <${retRec.dirToList!.path.takeLast(lenToExtract)}>
+<${retRec.permissionOnDir}>
+Content in directory <${retRec.dirToList!.path.takeLast(lenToExtract)}> size <${retRec.fileCount}>
 $allPaths''',
                                     softWrap: false,
                                     style: const TextStyle(
