@@ -9,6 +9,11 @@ class DatabaseService {
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'sqflite_demo.db');
-    final database = await openDatabase(databasePath);
+    final database = await openDatabase(
+      databasePath,
+      OnCreate: (db, version) {
+
+      },
+    );
   }
 }
