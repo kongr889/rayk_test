@@ -122,7 +122,7 @@ class MenuItemListUnderDirectory extends StatelessWidget {
                 }
                 // 4. Hanbdle errors
                 else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
+                  return Text("Error: (MenuItemListUnderDirectory.build) ${snapshot.error}");
                 } else {
                   final retRec = snapshot.data!;
                   const int lenToExtract =

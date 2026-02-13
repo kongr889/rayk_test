@@ -68,7 +68,9 @@ class MenuItemPathProviderDemo extends StatelessWidget {
                 }
                 // 4. Hanbdle errors
                 else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
+                  return Text(
+                    "Error: (MenuItemPathProviderDemo.build) ${snapshot.error}",
+                  );
                 } else {
                   final retRec = snapshot.data!;
                   const int lenToExtract = 1000;

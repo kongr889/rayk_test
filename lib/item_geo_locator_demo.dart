@@ -65,7 +65,7 @@ class MenuItemGeolocatorDemo extends StatelessWidget {
             }
             // 4. Hanbdle errors
             else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
+              return Text("Error: (MenuItemGeolocatorDemo.build) ${snapshot.error}");
             } else {
               return Row(
                 children: [
