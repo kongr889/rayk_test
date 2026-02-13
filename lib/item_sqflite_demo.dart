@@ -46,11 +46,14 @@ class MenuItemSqfliteDemo extends StatelessWidget {
             }
             // 4. Hanbdle errors
             else if (snapshot.hasError) {
-              return Text("Error: (MenuItemSqfliteDemo.build) ${snapshot.error}");
+              return Text(
+                "Error: (MenuItemSqfliteDemo.build) ${snapshot.error}",
+              );
             } else {
               final retRec = snapshot.data!;
               const int lenToExtract =
                   1000; // set this to large value, after implementing scrollbars to allow full visual.
+              final String aPath = retRec.
               final String allPaths = retRec.fileList
                   .map((file) => file.path)
                   .join('\n');
