@@ -36,22 +36,28 @@ class DatabaseService {
   }
 */
   Future<Database> get database async {
+    developer.log('Info: (DatabaseService.database) just entered');
     // If database exists, return it; otherwise, initialize it
     if (_db != null) {
+      developer.log('Info: (DatabaseService.database) returning existing _db');
       return _db!;
     }
 
     _db = await _initDB('master_sqflite.db');
+    developer.log(
+      'Info: (DatabaseService.database) returning newly created db and will check for _db first',
+    );
     return _db!;
   }
 
   Future<Database> _initDB(String dbName) async {
+    developer.log('Info: (DatabaseService._initDB) just entered');
     // Get the default directory for databases on Android/iOS
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, dbName);
 
     developer.log(
-      'Info: (DatabaseService._initDB) just entered with db full path <$path>',
+      'Info: (DatabaseService._initDB) db full path will be <$path>. about to call openDatabase()',
     );
 
     return await openDatabase(
