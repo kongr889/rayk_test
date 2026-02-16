@@ -86,7 +86,13 @@ class DatabaseService {
     developer.log('Info: (DatabaseService.metaDataText) just entered)');
     final db = await _instance.database;
 
-    return "abc\nxyz";
+    // rawQuery returns List<Map<String, dynamic>>
+    var result = await db.rawQuery('SELECT COUNT(*) FROM items');
+
+    // sqflite_common helper to easily parse the count
+    int? count = Sqflite.firstIntValue(result);
+
+    return "record count is <${count ?? 0}>";
   }
 
   Future close() async {
