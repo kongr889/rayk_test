@@ -3,7 +3,7 @@ import 'dart:developer' as developer;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'menu_base.dart';
-import 'menu_utils.dart';
+// import 'menu_utils.dart';
 
 /*
     This Service class sheilds all database opertions for the Database object embedded.
@@ -65,6 +65,10 @@ class DatabaseService {
       ''');
     }
 
+  Future<String> get metaDataText async {
+    return "abc\nxyz";
+  }
+
   Future close() async {
     final db = await _instance.database;
     db.close();
@@ -72,81 +76,58 @@ class DatabaseService {
 
 }
 
-class MenuItemSqfliteDemo extends StatelessWidget {
+class MenuItemSqfliteDemo extends StatefulWidget {
   const MenuItemSqfliteDemo({super.key, required this.functionalTitle});
 
   final String functionalTitle;
 
   @override
+  State<MenuItemSqfliteDemo> createState() => _MenuItemSqfliteDemoWidgetState();
+}
+
+class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
+  final DatabaseService _dbService = DatabaseService();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarForStdFunctional(context, functionalTitle),
+      appBar: appBarForStdFunctional(context, widget.functionalTitle),
       body: Container(
         margin: EdgeInsets.all(20),
-        child: FutureBuilder<DatabaseService>(
-          future: _getDatabaseInfo(),
-          builder: (context, snapshot) {
-            // 3. Handle the "Loading" state
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            // 4. Hanbdle errors
-            else if (snapshot.hasError) {
-              return Text(
-                "Error: (MenuItemSqfliteDemo.build) ${snapshot.error}",
-              );
-            } else {
-              final retRec = snapshot.data!;
-              const int lenToExtract =
-                  1000; // set this to large value, after implementing scrollbars to allow full visual.
-              final String aPath = retRec.
-              final String allPaths = retRec.fileList
-                  .map((file) => file.path)
-                  .join('\n');
-              return Column(
-                children: [
-                  Expanded(
-                    child: Scrollbar(
-                      // vertical scrollbar
-                      thumbVisibility: true,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Scrollbar(
-                          // Horizontal Scrollbar
-                          thumbVisibility: true,
-                          notificationPredicate: (notif) =>
-                              notif.depth == 1, // targets the horizontal scroll
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                '''
-tempDir is <${retRec.tempDir.path.takeLast(lenToExtract)}>
-appDocDir is <${retRec.appDocDir.path.takeLast(lenToExtract)}>
-appSupportDir is <${retRec.appSupportDir.path.takeLast(lenToExtract)}>
-externalDir is <${retRec.externalDir!.path.takeLast(lenToExtract)}>
-downloadDir is <${retRec.downloadDir.path.takeLast(lenToExtract)}>
-
-<${retRec.permissionOnDir}>
-Content in directory <${retRec.dirToList!.path.takeLast(lenToExtract)}> size <${retRec.fileCount}>
-$allPaths''',
-                                softWrap: false,
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Scrollbar(
+                // vertical scrollbar
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Scrollbar(
+                    // Horizontal Scrollbar
+                    thumbVisibility: true,
+                    notificationPredicate: (notif) =>
+                        notif.depth == 1, // targets the horizontal scroll
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          '''
+Meta data is <${_dbService.metaDataText}>
+''',
+                          softWrap: false,
+                          style: const TextStyle(
+                            fontFamily: 'monospace',
+                            fontSize: 12,
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              );
-            }
-          },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
