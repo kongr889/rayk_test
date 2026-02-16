@@ -5,25 +5,71 @@ import 'package:sqflite/sqflite.dart';
 import 'menu_base.dart';
 import 'menu_utils.dart';
 
+/*
+    This Service class sheilds all database opertions for the Database object embedded.
+*/
 class DatabaseService {
-  static final DatabaseService instance = DatabaseService._constructor();
+  static final DatabaseService _instance = DatabaseService._constructor();
+  static Database? _db;
 
-  DatabaseService._constructor();
-
-  Future<void> getDatabase() async {
-    final databaseDirPath = await getDatabasesPath();
-    final databasePath = join(databaseDirPath, 'sqflite_demo.db');
-    developer.log('(DatabaseService) Database Path <$databasePath>');
-
-    return null;
+  DatabaseService._constructor() {
+    developer.log("Info: initializing theme settings...");
   }
-}
 
-Future<DatabaseService> _getDatabaseInfo() async {
-  DatabaseService ret = DatabaseService._constructor();
-  await ret.getDatabase();
+  // 3. The Factory Constructor
+  // When someone calls ThemeManager(), they get the existing instance.
+  factory DatabaseService() {
+    return _instance;
+  }
+/*
+  Future<Database> get database async {
+    // If database exists, return it; otherwise, initialize it
+    if (_database != null) return _database!;
 
-  return ret;
+    _database = await _initDB('items_database.db');
+    return _database!;
+  }
+*/
+  Future<Database> get database async {
+    // If database exists, return it; otherwise, initialize it
+    if (_db != null) {
+      return _db!;
+    }
+
+    _db = await _initDB('master_sqflite.db');
+    return _db!;
+  }
+
+  Future<Database> _initDB(String dbName) async {
+    // Get the default directory for databases on Android/iOS
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, dbName);
+
+    return await openDatabase(
+        path,
+        version: 1, // Increment this if you change the schema later
+        onCreate: _createDB,
+      );
+  }
+
+  Future _createDB(Database db, int version) async {
+      await db.execute('''
+        CREATE TABLE items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          parent_id INTEGER,
+          name TEXT NOT NULL,
+          description TEXT,
+          image_name TEXT,
+          FOREIGN KEY (parent_id) REFERENCES items (id)
+        )
+      ''');
+    }
+
+  Future close() async {
+    final db = await _instance.database;
+    db.close();
+  }
+
 }
 
 class MenuItemSqfliteDemo extends StatelessWidget {
