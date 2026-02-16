@@ -142,16 +142,27 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                         child: FutureBuilder<String>(
                           future: _metaDataFuture,
                           builder: (context, snapshot) {
-                            developer.log('Debug: (build) inside FutureBuilder logic.....');
+                            developer.log(
+                              'Debug: todo (build) inside FutureBuilder logic.....',
+                            );
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
+                              developer.log(
+                                'Debug: todo (build) Connection.waiting ....',
+                              );
                               return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
+                              developer.log(
+                                'Debug: todo (build) snapshot.hasError ....',
+                              );
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
+                              developer.log(
+                                'Debug: todo (build) snapshot.hasData ....',
+                              );
                               return Text(
                                 '''
-Meta data is <${_dbService.metaDataText}>
+Meta data is <$_metaDataFuture>
 ''',
                                 softWrap: false,
                                 style: const TextStyle(
@@ -160,6 +171,7 @@ Meta data is <${_dbService.metaDataText}>
                                 ),
                               );
                             } else {
+                              developer.log('Debug: todo (build) noData ....');
                               return const Text('No Data');
                             }
                           },
