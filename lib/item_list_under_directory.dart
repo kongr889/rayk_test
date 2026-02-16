@@ -8,8 +8,6 @@ import 'menu_base.dart';
 import 'menu_utils.dart';
 
 /*
-TODO: This function is still under development, by transforming from item_path_provider_demo.dart
-      doing it little by little.
       The goal is output to a full-feature scrollable Text fields.
 */
 

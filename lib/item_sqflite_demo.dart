@@ -142,6 +142,7 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                         child: FutureBuilder<String>(
                           future: _metaDataFuture,
                           builder: (context, snapshot) {
+                            developer.log('Debug: (build) inside FutureBuilder logic.....');
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const CircularProgressIndicator();
