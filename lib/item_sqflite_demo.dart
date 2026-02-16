@@ -162,7 +162,7 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                               );
                               return Text(
                                 '''
-Meta data is <$_metaDataFuture>
+Meta data is <${snapshot.data.toString}>
 ''',
                                 softWrap: false,
                                 style: const TextStyle(
