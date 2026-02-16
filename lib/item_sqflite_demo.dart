@@ -13,15 +13,20 @@ class DatabaseService {
   static Database? _db;
 
   DatabaseService._constructor() {
-    developer.log("Info: initializing theme settings...");
+    developer.log(
+      "Info: (DatabaseService._constructor) invoked, no logic yet.",
+    );
   }
 
   // 3. The Factory Constructor
   // When someone calls ThemeManager(), they get the existing instance.
   factory DatabaseService() {
+    developer.log(
+      'Info: (factory DatabaseSevice) invoked to return _instance.',
+    );
     return _instance;
   }
-/*
+  /*
   Future<Database> get database async {
     // If database exists, return it; otherwise, initialize it
     if (_database != null) return _database!;
@@ -45,15 +50,20 @@ class DatabaseService {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, dbName);
 
+    developer.log(
+      'Info: (DatabaseService._initDB) just entered with db full path <$path>',
+    );
+
     return await openDatabase(
-        path,
-        version: 1, // Increment this if you change the schema later
-        onCreate: _createDB,
-      );
+      path,
+      version: 1, // Increment this if you change the schema later
+      onCreate: _createDB,
+    );
   }
 
-  Future _createDB(Database db, int version) async {
-      await db.execute('''
+  Future<void> _createDB(Database db, int version) async {
+    developer.log('Info: (DatabaseService._createDB) just entered');
+    await db.execute('''
         CREATE TABLE items (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           parent_id INTEGER,
@@ -63,17 +73,20 @@ class DatabaseService {
           FOREIGN KEY (parent_id) REFERENCES items (id)
         )
       ''');
-    }
+    developer.log('Info: (DatabaseService._createDB) about to exit');
+  }
 
   Future<String> get metaDataText async {
+    developer.log('Info: (DatabaseService.metaDataText) just entered)');
     return "abc\nxyz";
   }
 
   Future close() async {
+    developer.log('Info: (DatabaseService.close) just entered)');
+
     final db = await _instance.database;
     db.close();
   }
-
 }
 
 class MenuItemSqfliteDemo extends StatefulWidget {
