@@ -84,6 +84,8 @@ class DatabaseService {
 
   Future<String> get metaDataText async {
     developer.log('Info: (DatabaseService.metaDataText) just entered)');
+    final db = await _instance.database;
+
     return "abc\nxyz";
   }
 
@@ -106,6 +108,13 @@ class MenuItemSqfliteDemo extends StatefulWidget {
 
 class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
   final DatabaseService _dbService = DatabaseService();
+  late Future<String> _metaDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _metaDataFuture = _dbService.metaDataText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,15 +139,29 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          '''
+                        child: FutureBuilder<String>(
+                          future: _metaDataFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                '''
 Meta data is <${_dbService.metaDataText}>
 ''',
-                          softWrap: false,
-                          style: const TextStyle(
-                            fontFamily: 'monospace',
-                            fontSize: 12,
-                          ),
+                                softWrap: false,
+                                style: const TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontSize: 12,
+                                ),
+                              );
+                            } else {
+                              return const Text('No Data');
+                            }
+                          },
                         ),
                       ),
                     ),
