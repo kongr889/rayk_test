@@ -234,8 +234,12 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
     await _dbService.deleteDatabaseAndFile();
     _nameController.clear();
     // await _refreshMetaData();
-    if (!mounted) return;
-    Navigator.of(context).pop(); // Goes back to the previous screen
+    developer.log(
+      'INfo: (MenuItemSqfliteDemo._handleDeleteDatabase) the mount value is <$mounted>',
+    );
+    if (!mounted) {
+      Navigator.pop; // Goes back to the previous screen
+    }
   }
 
   @override
