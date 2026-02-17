@@ -55,11 +55,17 @@ class DatabaseService {
       'Info: (DatabaseService._initDB) db full path will be <$fileSpec>. about to call openDatabase()',
     );
 
-    return await openDatabase(
-      fileSpec,
-      version: 1, // Increment this if you change the schema later
-      onCreate: _createDB,
-    );
+    try {
+      return await openDatabase(
+        fileSpec,
+        version: 1, // Increment this if you change the schema later
+        onCreate: _createDB,
+      );
+    } catch (e) {
+        // Log the error or send to an analytics service
+        developer.log('Error opening database: $e');
+        rethrow; // Pass the error up to the UI layer
+      }
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -94,7 +100,15 @@ class DatabaseService {
     // sqflite_common helper to easily parse the count
     int? count = Sqflite.firstIntValue(result);
 
-    return "record count is <${count ?? 0}>";
+    // rawQuery() returns List<Map<String, dynamic>>
+    var rowResultObj = await db.rawQuery('SELECT * FROM items LIMIT 3');
+    String rowsText = rowResultObj
+        .map((row) => "${row['id']}: ${row['name']}\t${row['description']}")
+        .join("\n");
+
+    return """record count is <${count ?? 0}>
+First few rows:
+$rowsText""";
   }
 
   // Method to add a row
@@ -186,17 +200,15 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child:
-                          Text(
-                            '''
+                        child: Text(
+                          '''
   Path is <$_path>
   Meta data is <$_metaDataFuture>
   ''',
-                            softWrap: false,
-                            style: const TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 12,
-                            ),
+                          softWrap: false,
+                          style: const TextStyle(
+                            fontFamily: 'monospace',
+                            fontSize: 12,
                           ),
                         ),
                       ),
@@ -204,6 +216,7 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                   ),
                 ),
               ),
+            ),
             const SizedBox(height: 10),
             TextField(
               controller: _nameController,
