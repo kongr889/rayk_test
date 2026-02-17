@@ -139,14 +139,21 @@ $rowsText""";
   // Method to drop a row
   Future<void> dropRow(String name, int parentId) async {
     final db = await _instance.database;
-    await db.delete('items', where: 'name = ? and parent_id = ?', whereArgs: [name, parentId]);
+    await db.delete(
+      'items',
+      where: 'name = ? and parent_id = ?',
+      whereArgs: [name, parentId],
+    );
   }
 
-  Future close() async {
-    developer.log('Info: (DatabaseService.close) just entered)');
-
+  Future<void> deleteDatabaseAndFile() async {
+    developer.log('Info: (DatabaseService.deleteDatabase) just entered)');
     final db = await _instance.database;
-    db.close();
+    await db.close();
+
+    if (path != null) {
+      await deleteDatabase(path!);
+    }
   }
 }
 
@@ -205,14 +212,18 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
         'Info: (MenuItemSqfliteDemo._handleRemoveItem) about to remove a row by name <${_nameController.text}>...',
       );
 
-      await _dbService.dropRow(
-        _nameController.text,
-        0,
-      );
+      await _dbService.dropRow(_nameController.text, 0);
 
       _nameController.clear();
       await _refreshMetaData();
     }
+  }
+
+  // Handles deletion of the database and the associate file.
+  Future<void> _handleDeleteDatabase() async {
+    await _dbService.deleteDatabaseAndFile();
+    _nameController.clear();
+    await _refreshMetaData();
   }
 
   @override
@@ -283,6 +294,15 @@ Meta data is <$_metaDataFuture>
                   ),
                 ),
               ],
+            ),
+            SizedBox(height: 6),
+            ElevatedButton.icon(
+              onPressed: _handleDeleteDatabase,
+              icon: Icon(Icons.delete_forever),
+              label: Text("Delete Database"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+              ),
             ),
           ],
         ),
