@@ -126,15 +126,25 @@ class MenuItemSqfliteDemo extends StatefulWidget {
 
 class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
   final DatabaseService _dbService = DatabaseService();
-  late Future<String> _metaDataFuture;
-  late Future<String> _path;
+  // late Future<String> _metaDataFuture;
+  String? _metaDataFuture;
+  String? _path;
   final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _metaDataFuture = _dbService.metaDataText;
-    _path = _dbService.pathText;
+    _refreshMetaData();
+  }
+
+  // Updates the UI with the current count from the DB
+  Future<void> _refreshMetaData() async {
+    final tempMetaData = await _dbService.metaDataText;
+    final tempPath = await _dbService.pathText;
+    setState(() {
+      _metaDataFuture = tempMetaData;
+      _path = tempPath;
+    });
   }
 
   // H andles adding the item and refreshing the view
@@ -143,7 +153,11 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
       developer.log(
         'Info: (MenuItemSqfliteDemo._handleAddItem) about to add a new row with name <${_nameController.text}>...',
       );
-      await _dbService.addRow(_nameController.text, "New Item Description", 0);
+      await _dbService.addRow(
+        _nameController.text,
+        "description for ${_nameController.text}",
+        0,
+      );
       _nameController.clear();
       // await _refreshCount();
     }
@@ -172,37 +186,24 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: FutureBuilder<List<String>>(
-                          future: Future.wait([_path, _metaDataFuture]),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData) {
-                              return Text(
-                                '''
-Path is <${snapshot.data![0]}>
-Meta data is <${snapshot.data![1]}>
-''',
-                                softWrap: false,
-                                style: const TextStyle(
-                                  fontFamily: 'monospace',
-                                  fontSize: 12,
-                                ),
-                              );
-                            } else {
-                              return const Text('No Data');
-                            }
-                          },
+                        child:
+                          Text(
+                            '''
+  Path is <$_path>
+  Meta data is <$_metaDataFuture>
+  ''',
+                            softWrap: false,
+                            style: const TextStyle(
+                              fontFamily: 'monospace',
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
             const SizedBox(height: 10),
             TextField(
               controller: _nameController,
