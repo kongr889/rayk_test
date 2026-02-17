@@ -230,10 +230,12 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
   }
 
   // Handles deletion of the database and the associate file.
-  Future<void> _handleDeleteDatabase() async {
+  void _handleDeleteDatabase() async {
     await _dbService.deleteDatabaseAndFile();
     _nameController.clear();
-    await _refreshMetaData();
+    // await _refreshMetaData();
+    if (!mounted) return;
+    Navigator.of(context).pop(); // Goes back to the previous screen
   }
 
   @override
@@ -291,17 +293,21 @@ Meta data is <$_metaDataFuture>
             SizedBox(height: 6),
             Row(
               children: [
-                ElevatedButton.icon(
-                  onPressed: _handleAddItem,
-                  icon: Icon(Icons.add),
-                  label: Text("Add Item"),
-                  style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _handleAddItem,
+                    icon: Icon(Icons.add),
+                    label: Text("Add Item"),
+                    style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
+                  ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: _handleRemoveItem,
-                  icon: Icon(Icons.remove),
-                  label: Text("Remove Item"),
-                  style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _handleRemoveItem,
+                    icon: Icon(Icons.remove),
+                    label: Text("Remove Item"),
+                    style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
+                  ),
                 ),
               ],
             ),
