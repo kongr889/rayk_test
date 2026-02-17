@@ -172,11 +172,21 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
   String? _metaDataFuture;
   String? _path;
   final TextEditingController _nameController = TextEditingController();
+  final ScrollController _verticalScrollController = ScrollController();
+  final ScrollController _horizontalScrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _refreshMetaData();
+  }
+
+  @override
+  void dispose() {
+    _verticalScrollController.dispose();
+    _horizontalScrollController.dispose();
+    _nameController.dispose();
+    super.dispose();
   }
 
   // Updates the UI with the current count from the DB
@@ -238,14 +248,18 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
               child: Scrollbar(
                 // vertical scrollbar
                 thumbVisibility: true,
+                controller: _verticalScrollController,
                 child: SingleChildScrollView(
+                  controller: _verticalScrollController,
                   scrollDirection: Axis.vertical,
                   child: Scrollbar(
                     // Horizontal Scrollbar
                     thumbVisibility: true,
+                    controller: _horizontalScrollController,
                     notificationPredicate: (notif) =>
                         notif.depth == 1, // targets the horizontal scroll
                     child: SingleChildScrollView(
+                      controller: _horizontalScrollController,
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -281,17 +295,13 @@ Meta data is <$_metaDataFuture>
                   onPressed: _handleAddItem,
                   icon: Icon(Icons.add),
                   label: Text("Add Item"),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                  ),
+                  style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
                 ),
                 ElevatedButton.icon(
                   onPressed: _handleRemoveItem,
                   icon: Icon(Icons.remove),
                   label: Text("Remove Item"),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                  ),
+                  style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
                 ),
               ],
             ),
@@ -300,9 +310,7 @@ Meta data is <$_metaDataFuture>
               onPressed: _handleDeleteDatabase,
               icon: Icon(Icons.delete_forever),
               label: Text("Delete Database"),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
+              style: ElevatedButton.styleFrom(minimumSize: Size(5, 50)),
             ),
           ],
         ),
