@@ -4,6 +4,7 @@ import 'item_geo_locator_demo.dart';
 import 'item_path_provider_demo.dart';
 import 'item_list_under_directory.dart';
 import 'item_sqflite_demo.dart';
+import 'item_google_drive_demo.dart';
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('Simple Packages', ItemType.subTitle),
@@ -26,6 +27,11 @@ List<ItemDef> _menuDef = [
     'Sqflite demo with items_database.db',
     ItemType.functional,
     (name) => MenuItemSqfliteDemo(functionalTitle: name),
+  ),
+  ItemDef(
+    'Google Drive Related Demo',
+    ItemType.functional,
+    (name) => MenuItemGoogleDriveDemo(functionalTitle: name),
   ),
   ItemDef(
     'Jump to top menu',
