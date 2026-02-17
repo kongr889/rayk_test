@@ -11,6 +11,7 @@ import 'menu_base.dart';
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._constructor();
   static Database? _db;
+  static String? path;
 
   DatabaseService._constructor() {
     developer.log(
@@ -26,15 +27,7 @@ class DatabaseService {
     );
     return _instance;
   }
-  /*
-  Future<Database> get database async {
-    // If database exists, return it; otherwise, initialize it
-    if (_database != null) return _database!;
 
-    _database = await _initDB('items_database.db');
-    return _database!;
-  }
-*/
   Future<Database> get database async {
     developer.log('Info: (DatabaseService.database) just entered');
     // If database exists, return it; otherwise, initialize it
@@ -53,15 +46,17 @@ class DatabaseService {
   Future<Database> _initDB(String dbName) async {
     developer.log('Info: (DatabaseService._initDB) just entered');
     // Get the default directory for databases on Android/iOS
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, dbName);
+    // final dbPath = await getDatabasesPath();
+    final dbPath = "/storage/emulated/0/Download";
+    final fileSpec = join(dbPath, dbName);
+    path = fileSpec;
 
     developer.log(
-      'Info: (DatabaseService._initDB) db full path will be <$path>. about to call openDatabase()',
+      'Info: (DatabaseService._initDB) db full path will be <$fileSpec>. about to call openDatabase()',
     );
 
     return await openDatabase(
-      path,
+      fileSpec,
       version: 1, // Increment this if you change the schema later
       onCreate: _createDB,
     );
@@ -76,10 +71,17 @@ class DatabaseService {
           name TEXT NOT NULL,
           description TEXT,
           image_name TEXT,
-          FOREIGN KEY (parent_id) REFERENCES items (id)
+          FOREIGN KEY (parent_id) REFERENCES items (id),
+          UNIQUE(name, parent_id) -- ensure no duplication of name under each parent.
         )
       ''');
     developer.log('Info: (DatabaseService._createDB) about to exit');
+  }
+
+  Future<String> get pathText async {
+    developer.log('Info: (DatabaseService.pathText) just entered)');
+
+    return path ?? '';
   }
 
   Future<String> get metaDataText async {
@@ -93,6 +95,16 @@ class DatabaseService {
     int? count = Sqflite.firstIntValue(result);
 
     return "record count is <${count ?? 0}>";
+  }
+
+  // Method to add a row
+  Future<int> addRow(String name, String description, int parentId) async {
+    final db = await _instance.database;
+    return await db.insert(
+      'items', // table name
+      {'name': name, 'description': description, 'parent_id': parentId},
+      conflictAlgorithm: ConflictAlgorithm.abort,
+    );
   }
 
   Future close() async {
@@ -115,11 +127,26 @@ class MenuItemSqfliteDemo extends StatefulWidget {
 class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
   final DatabaseService _dbService = DatabaseService();
   late Future<String> _metaDataFuture;
+  late Future<String> _path;
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _metaDataFuture = _dbService.metaDataText;
+    _path = _dbService.pathText;
+  }
+
+  // H andles adding the item and refreshing the view
+  Future<void> _handleAddItem() async {
+    if (_nameController.text.isNotEmpty) {
+      developer.log(
+        'Info: (MenuItemSqfliteDemo._handleAddItem) about to add a new row with name <${_nameController.text}>...',
+      );
+      await _dbService.addRow(_nameController.text, "New Item Description", 0);
+      _nameController.clear();
+      // await _refreshCount();
+    }
   }
 
   @override
@@ -145,30 +172,19 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: FutureBuilder<String>(
-                          future: _metaDataFuture,
+                        child: FutureBuilder<List<String>>(
+                          future: Future.wait([_path, _metaDataFuture]),
                           builder: (context, snapshot) {
-                            developer.log(
-                              'Debug: todo (build) inside FutureBuilder logic.....',
-                            );
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              developer.log(
-                                'Debug: todo (build) Connection.waiting ....',
-                              );
                               return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              developer.log(
-                                'Debug: todo (build) snapshot.hasError ....',
-                              );
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
-                              developer.log(
-                                'Debug: todo (build) snapshot.hasData ....',
-                              );
                               return Text(
                                 '''
-Meta data is <${snapshot.data}>
+Path is <${snapshot.data![0]}>
+Meta data is <${snapshot.data![1]}>
 ''',
                                 softWrap: false,
                                 style: const TextStyle(
@@ -177,7 +193,6 @@ Meta data is <${snapshot.data}>
                                 ),
                               );
                             } else {
-                              developer.log('Debug: todo (build) noData ....');
                               return const Text('No Data');
                             }
                           },
@@ -186,6 +201,23 @@ Meta data is <${snapshot.data}>
                     ),
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: "Item Name",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 6),
+            ElevatedButton.icon(
+              onPressed: _handleAddItem,
+              icon: Icon(Icons.add),
+              label: Text("Add Item"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
               ),
             ),
           ],
