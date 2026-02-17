@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
+import 'dart:io';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'menu_base.dart';
 // import 'menu_utils.dart';
@@ -47,25 +49,38 @@ class DatabaseService {
     developer.log('Info: (DatabaseService._initDB) just entered');
     // Get the default directory for databases on Android/iOS
     // final dbPath = await getDatabasesPath();
-    final dbPath = "/storage/emulated/0/Download";
-    final fileSpec = join(dbPath, dbName);
+    var dbPath = "/storage/emulated/0/Download";
+    var fileSpec = join(dbPath, dbName); // will be updated later, if needed.
     path = fileSpec;
 
     developer.log(
-      'Info: (DatabaseService._initDB) db full path will be <$fileSpec>. about to call openDatabase()',
+      'Info: (DatabaseService._initDB)(1) db full path will be <$fileSpec>. about to do directory validation before calling openDatabase()',
     );
 
     try {
-      return await openDatabase(
-        fileSpec,
-        version: 1, // Increment this if you change the schema later
-        onCreate: _createDB,
+      final directory = Directory(dbPath);
+      await directory.create(recursive: true);
+      developer.log(
+        'Info: (DatabaseService._initDB) Directory <$dbPath> s writable and directory created.',
       );
     } catch (e) {
-        // Log the error or send to an analytics service
-        developer.log('Error opening database: $e');
-        rethrow; // Pass the error up to the UI layer
-      }
+      // Log the error or send to an analytics service
+      developer.log(
+        'Warn: primary accessing database directory of <$dbPath>. Thiis is possible for device emulator. Exception: $e',
+      );
+      // will use a secondary directory
+      final secondaryPath = await getTemporaryDirectory();
+      developer.log('Info: will use secondary directory <$secondaryPath.path>');
+      fileSpec = join(secondaryPath.path, dbName);
+      developer.log(
+        'Info: (DatabaseService._initDB)(2) db full path will be <$fileSpec>. about to call openDatabase()',
+      );
+    }
+    return await openDatabase(
+      fileSpec,
+      version: 1, // Increment this if you change the schema later
+      onCreate: _createDB,
+    );
   }
 
   Future<void> _createDB(Database db, int version) async {
