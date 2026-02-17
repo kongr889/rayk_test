@@ -136,6 +136,12 @@ $rowsText""";
     );
   }
 
+  // Method to drop a row
+  Future<void> dropRow(String name, int parentId) async {
+    final db = await _instance.database;
+    await db.delete('items', where: 'name = ? and parent_id = ?', whereArgs: [name, parentId]);
+  }
+
   Future close() async {
     developer.log('Info: (DatabaseService.close) just entered)');
 
@@ -176,7 +182,7 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
     });
   }
 
-  // H andles adding the item and refreshing the view
+  // Handles adding the item and refreshing the view
   Future<void> _handleAddItem() async {
     if (_nameController.text.isNotEmpty) {
       developer.log(
@@ -188,7 +194,24 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
         0,
       );
       _nameController.clear();
-      // await _refreshCount();
+      await _refreshMetaData();
+    }
+  }
+
+  // Handles adding the item and refreshing the view
+  Future<void> _handleRemoveItem() async {
+    if (_nameController.text.isNotEmpty) {
+      developer.log(
+        'Info: (MenuItemSqfliteDemo._handleRemoveItem) about to remove a row by name <${_nameController.text}>...',
+      );
+
+      await _dbService.dropRow(
+        _nameController.text,
+        0,
+      );
+
+      _nameController.clear();
+      await _refreshMetaData();
     }
   }
 
@@ -217,9 +240,9 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
                           '''
-  Path is <$_path>
-  Meta data is <$_metaDataFuture>
-  ''',
+Path is <$_path>
+Meta data is <$_metaDataFuture>
+''',
                           softWrap: false,
                           style: const TextStyle(
                             fontFamily: 'monospace',
@@ -241,13 +264,25 @@ class _MenuItemSqfliteDemoWidgetState extends State<MenuItemSqfliteDemo> {
               ),
             ),
             SizedBox(height: 6),
-            ElevatedButton.icon(
-              onPressed: _handleAddItem,
-              icon: Icon(Icons.add),
-              label: Text("Add Item"),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _handleAddItem,
+                  icon: Icon(Icons.add),
+                  label: Text("Add Item"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: _handleRemoveItem,
+                  icon: Icon(Icons.remove),
+                  label: Text("Remove Item"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
