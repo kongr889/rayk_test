@@ -9,7 +9,31 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'menu_base.dart';
 import 'item_sqflite_demo.dart';
-// import 'menu_utils.dart';
+
+class GoogleDriveService {
+  static final GoogleDriveService _instance = GoogleDriveService._constructor();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [gdrive.DriveApi.driveFileScope],
+  );
+
+  GoogleDriveService._constructor() {
+    developer.log(
+      "Info: (GoogleDriveService._constructor) invoked, no logic yet.",
+    );
+  }
+
+  // 3. The Factory Constructor
+  // When someone calls ThemeManager(), they get the existing instance.
+  factory GoogleDriveService() {
+    developer.log(
+      'Info: (factory GoogleDriveService) invoked to return _instance.',
+    );
+    return _instance;
+  }
+
+
+
+}
 
 class MenuItemGoogleDriveDemo extends StatefulWidget {
   const MenuItemGoogleDriveDemo({super.key, required this.functionalTitle});
