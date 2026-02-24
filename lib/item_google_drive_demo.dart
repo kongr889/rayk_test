@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
-import 'dart:io';
+//import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/drive/v3.dart' as gdrive;
+import 'package:googleapis/drive/v3.dart' as gDrive;
+// This extension provides the authenticatedClient() method on GoogleSignInAccount
+/*
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+*/
 import 'menu_base.dart';
 import 'item_sqflite_demo.dart';
 
 class GoogleDriveService {
   static final GoogleDriveService _instance = GoogleDriveService._constructor();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [gdrive.DriveApi.driveFileScope],
-  );
+  // Reference to the package singleton
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+
+  static const _driveScopes = [gDrive.DriveApi.driveFileScope];
+
+  GoogleSignInAccount? _user;
+  gDrive.DriveApi? _driveApi;
 
   GoogleDriveService._constructor() {
     developer.log(
@@ -31,8 +38,44 @@ class GoogleDriveService {
     return _instance;
   }
 
+  // The Login Method (v7.0 logic)
+  Future<bool> login() async {
+    try {
+      // 1. You MUST initialize in v7+
+      await _googleSignIn.initialize();
 
+      // 2. Attempt "Lightweight Authentication" (Silent sign-in)
+      _user = await _googleSignIn.attemptLightweightAuthentication();
 
+      // 3. If no existing session, trigger the UI
+      // In v7+, use authenticate() instead of signIn()
+      _user ??= await _googleSignIn.authenticate();
+
+      if (_user != null) {
+        // 4. Handle Authorization (Requesting Drive Scopes)
+        final authClient = _googleSignIn.authorizationClient;
+        var authorization = await authClient.authorizationForScopes(
+          _driveScopes,
+        );
+
+        // If the user hasn't granted Drive access yet, ask now
+        authorization ??= await authClient.authorizeScopes(_driveScopes);
+
+        // 5. Build the Drive API client
+        // Requires the 'extension_google_sign_in_as_googleapis_auth' package
+        final authenticatedClient = await _user!.authenticatedClient();
+        _driveApi = gDrive.DriveApi(authenticatedClient!);
+
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('DriveService Login Error: $e');
+      return false;
+    }
+  }
+
+  // gDrive.DriveApi? get driveApi => _driveApi;
 }
 
 class MenuItemGoogleDriveDemo extends StatefulWidget {
