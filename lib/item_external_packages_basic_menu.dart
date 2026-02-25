@@ -10,6 +10,11 @@ import 'item_mobile_device_demo.dart';
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('Simple Packages', ItemType.subTitle),
   ItemDef(
+    'Media Query demo',
+    ItemType.functional,
+    (name) => MenuItemMobileDeviceDemo(functionalTitle: name),
+  ),
+  ItemDef(
     'Geolocator demo',
     ItemType.functional,
     (name) => MenuItemGeolocatorDemo(functionalTitle: name),
@@ -28,11 +33,6 @@ List<ItemDef> _menuDef = [
     'Sqflite demo with items_database.db',
     ItemType.functional,
     (name) => MenuItemSqfliteDemo(functionalTitle: name),
-  ),
-  ItemDef(
-    'Media Query demo',
-    ItemType.functional,
-    (name) => MenuItemMobileDeviceDemo(functionalTitle: name),
   ),
   /*
   ItemDef(
