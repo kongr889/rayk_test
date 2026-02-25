@@ -30,7 +30,9 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
       aWidget = ElevatedButton(
         onPressed: () {
           final Widget widgetToPush = aItem.widgetBuilder!(aItem.name);
-          developer.log('switching to a new functional screen for <${aItem.name}>');
+          developer.log(
+            'switching to a new functional screen for <${aItem.name}>',
+          );
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => widgetToPush),
@@ -68,19 +70,25 @@ Scaffold makeMenu(BuildContext context, String title, List<ItemDef> menuDef) {
       // the App.build method, and use it to set our appbar title.
       title: Text(title),
     ),
-    body: Container(
-      margin: EdgeInsets.all(20),
-      child: mainWidget,
+    body: Scrollbar(
+      thumbVisibility: true,
+      child: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(margin: EdgeInsets.all(20), child: mainWidget),
+          ),
+        ],
       ),
+    ),
   );
 }
 
 abstract class ItemMenuBase extends StatelessWidget {
-
   const ItemMenuBase({
     super.key,
     required this.functionalTitle,
-    required this.menuDef
+    required this.menuDef,
   });
 
   final String functionalTitle;
