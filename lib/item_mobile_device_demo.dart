@@ -23,8 +23,9 @@ class MenuItemMobileDeviceDemo extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               child: Text('''
-  device height: $deviceHeight
-  device width: $deviceWidth'''),
+device height: $deviceHeight
+device width: $deviceWidth
+device orientation ${MediaQuery.of(context).orientation.toString()}'''),
             ),
           ],
         ),
