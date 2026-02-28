@@ -17,11 +17,11 @@ import 'item_google_drive_demo_web_wrapper.dart' as web;
 
 /// To run this example, replace this value with your client ID, and/or
 /// update the relevant configuration files, as described in the README.
-String? clientId;
+String? clientId = "rayk@techie.com";
 
 /// To run this example, replace this value with your server client ID, and/or
 /// update the relevant configuration files, as described in the README.
-String? serverClientId;
+String? serverClientId = "rayk@techie.com";
 
 /// The scopes required by this application.
 // #docregion CheckAuthorization
