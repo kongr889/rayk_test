@@ -25,9 +25,7 @@ String? serverClientId;
 
 /// The scopes required by this application.
 // #docregion CheckAuthorization
-const List<String> scopes = <String>[
-  'https://www.googleapis.com/auth/contacts.readonly',
-];
+const List<String> scopes = <String>['https://www.googleapis.com/auth/drive'];
 // #enddocregion CheckAuthorization
 
 class MenuItemGoogleDriveDemo extends StatefulWidget {
