@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'menu_base.dart';
 // only import related items involved in this menu
-import 'item_external_packages_basic_menu.dart';
-import 'item_personal_inventory_builder_menu.dart';
+import 'item_menu_external_packages_basic.dart';
+import 'item_menu_personal_inventory_builder.dart';
 
 void main() {
   runApp(const SaMenuStatelessApp());
