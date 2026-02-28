@@ -5,7 +5,7 @@ import 'item_path_provider_demo.dart';
 import 'item_list_under_directory.dart';
 import 'item_sqflite_demo.dart';
 import 'item_mobile_device_demo.dart';
-//import 'item_google_drive_demo.dart';
+import 'item_google_drive_demo.dart';
 
 List<ItemDef> _menuDef = [
   ItemDef.withoutFunction('Simple Packages', ItemType.subTitle),
@@ -34,13 +34,11 @@ List<ItemDef> _menuDef = [
     ItemType.functional,
     (name) => MenuItemSqfliteDemo(functionalTitle: name),
   ),
-  /*
   ItemDef(
     'Google Drive Related Demo',
     ItemType.functional,
     (name) => MenuItemGoogleDriveDemo(functionalTitle: name),
   ),
-*/
   ItemDef(
     'Jump to top menu',
     ItemType.functional,
