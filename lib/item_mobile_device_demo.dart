@@ -13,6 +13,7 @@ class MenuItemMobileDeviceDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
       appBar: appBarForStdFunctional(context, functionalTitle),
@@ -25,7 +26,7 @@ class MenuItemMobileDeviceDemo extends StatelessWidget {
               child: Text('''
 device height: $deviceHeight
 device width: $deviceWidth
-device orientation ${MediaQuery.of(context).orientation.toString()}'''),
+device orientation ${orientation.name}'''),
             ),
           ],
         ),
