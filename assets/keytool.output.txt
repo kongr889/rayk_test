@@ -1,0 +1,16 @@
+rayktestfb01-38852874:~/rayk_test{fb-01}$ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+Alias name: androiddebugkey
+Creation date: Dec 10, 2025
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: C=US, O=Android, CN=Android Debug
+Issuer: C=US, O=Android, CN=Android Debug
+Serial number: 1
+Valid from: Wed Dec 10 01:25:31 UTC 2025 until: Fri Dec 03 01:25:31 UTC 2055
+Certificate fingerprints:
+         SHA1: 5E:6A:DD:74:FF:E5:73:E6:9D:19:4C:9E:9C:C0:C7:41:6F:39:5D:84
+         SHA256: 96:34:B5:04:1C:0F:B2:1D:4C:CF:F0:DE:BF:27:BC:BD:12:41:4C:16:EE:EF:C6:C9:70:40:E6:74:91:8B:9E:D3
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 1

@@ -25,7 +25,10 @@ String? serverClientId = "rayk@techie.com";
 
 /// The scopes required by this application.
 // #docregion CheckAuthorization
-const List<String> scopes = <String>['https://www.googleapis.com/auth/drive'];
+const List<String> scopes = <String>[
+  'email',
+  'https://www.googleapis.com/auth/drive.file',
+];
 // #enddocregion CheckAuthorization
 
 class MenuItemGoogleDriveDemo extends StatefulWidget {
