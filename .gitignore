@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# security advice. do not commit google-services.json
+# in case the project loose them, they can be downloaded from GCP console -> Google Auth Platform -> Clients -> Actions -> download (icon)
+android/app/google-services.json
+assets/client_secret_*.json
