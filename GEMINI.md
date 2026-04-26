@@ -832,3 +832,7 @@ When requested for Firebase add the following the server configurations to .idx/
         }
     }
 }
+
+# User Preferences (Persistent)
+
+* **Ignored Tools:** The user does not use Android Studio or Visual Studio. Ignore any `flutter doctor` warnings related to the Android SDK, Android toolchains, or Visual Studio requirements.
