@@ -106,6 +106,9 @@ class _MenuItemGoogleDriveDemoWidgetState
         } else {
           silentAuthFuture
               .then((account) {
+                /* According to testing, emulator will have account == null, while mobile device will have account returned.
+                   I am not able to make the emulator to login Google outside of this mobile app.
+                */
                 developer.log(
                   'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) ${account == null ? "no user found" : "user found: ${account.email}"}',
                 );
