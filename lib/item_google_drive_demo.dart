@@ -98,10 +98,24 @@ class _MenuItemGoogleDriveDemoWidgetState
         developer.log(
           'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling signIn.authenticationEvents() and about to call siginIn.attemptLightweightAuthentication()',
         );
-        signIn.attemptLightweightAuthentication();
-        developer.log(
-          'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling siginIn.attemptLightweightAuthentication() which is the end of the await()',
-        );
+        final silentAuthFuture = signIn.attemptLightweightAuthentication();
+        if (silentAuthFuture == null) {
+          developer.log(
+            'Error: (_MenuItemGoogleDriveDemoWidgetState._initApp) silentAuthFuture is null. Please investigate.',
+          );
+        } else {
+          silentAuthFuture
+              .then((account) {
+                developer.log(
+                  'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) ${account == null ? "no user found" : "user found: ${account.email}"}',
+                );
+              })
+              .catchError((e) {
+                developer.log(
+                  'Error: (_MenuItemGoogleDriveDemoWidgetState._initApp) silentAuthFuture failed with error: ',
+                );
+              });
+        }
       }),
     );
     developer.log(
