@@ -59,9 +59,22 @@ class _MenuItemGoogleDriveDemoWidgetState
   Future<void> _initApp() async {
     // 1. Initialize Firebase only if it hasn't been done yet
     if (Firebase.apps.isEmpty) {
+      developer.log(
+        'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) about to call WidgetsFlutterBinding.ensureInitialized()',
+      );
       WidgetsFlutterBinding.ensureInitialized();
+      developer.log(
+        'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) about to call Firebase.initializeApp()',
+      );
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
+      );
+      developer.log(
+        'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling Firebase.initializeApp()',
+      );
+    } else {
+      developer.log(
+        'Warn: (_MenuItemGoogleDriveDemoWidgetState._initApp) Firebase.apps() is not empty. Skipping Firebase.initializeApp() logic.',
       );
     }
 
@@ -69,22 +82,39 @@ class _MenuItemGoogleDriveDemoWidgetState
     // Note: If 'instance' and 'initialize' cause errors,
     // we can switch to the standard 'GoogleSignIn()' constructor.
     final GoogleSignIn signIn = GoogleSignIn.instance;
+    developer.log(
+      'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling GoogleSignIn.instance()',
+    );
     unawaited(
-      signIn
-          .initialize(clientId: clientId, serverClientId: serverClientId)
-          .then((_) {
-            signIn.authenticationEvents
-                .listen(_handleAuthenticationEvent)
-                .onError(_handleAuthenticationError);
-
-            signIn.attemptLightweightAuthentication();
-          }),
+      signIn.initialize(clientId: clientId, serverClientId: serverClientId).then((
+        _,
+      ) {
+        developer.log(
+          'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling signIn.initialize() and about to call siginIn.authenticationEvents()',
+        );
+        signIn.authenticationEvents
+            .listen(_handleAuthenticationEvent)
+            .onError(_handleAuthenticationError);
+        developer.log(
+          'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling signIn.authenticationEvents() and about to call siginIn.attemptLightweightAuthentication()',
+        );
+        signIn.attemptLightweightAuthentication();
+        developer.log(
+          'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling siginIn.attemptLightweightAuthentication() which is the end of the await()',
+        );
+      }),
+    );
+    developer.log(
+      'Info: (_MenuItemGoogleDriveDemoWidgetState._initApp) after calling unawaited()',
     );
   }
 
   Future<void> _handleAuthenticationEvent(
     GoogleSignInAuthenticationEvent event,
   ) async {
+    developer.log(
+      'Info: (_MenuItemGoogleDriveDemoWidgetState._handleAuthenticationEvent) entering routine',
+    );
     // #docregion CheckAuthorization
     final GoogleSignInAccount? user = // ...
         // #enddocregion CheckAuthorization
@@ -114,6 +144,9 @@ class _MenuItemGoogleDriveDemoWidgetState
   }
 
   Future<void> _handleAuthenticationError(Object e) async {
+    developer.log(
+      'Info: (_MenuItemGoogleDriveDemoWidgetState._handleAuthenticationError) entering this error routine',
+    );
     setState(() {
       _currentUser = null;
       _isAuthorized = false;
