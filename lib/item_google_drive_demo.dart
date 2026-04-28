@@ -2,7 +2,7 @@ import 'dart:developer' as developer;
 import 'dart:async';
 import 'dart:convert' show json;
 //import 'dart:io';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,14 +14,15 @@ import 'package:http/http.dart' as http;
 // import 'package:path_provider/path_provider.dart';
 import 'item_google_drive_demo_web_wrapper.dart' as web;
 // import 'menu_base.dart';
+import 'firebase_options.dart';
 
 /// To run this example, replace this value with your client ID, and/or
 /// update the relevant configuration files, as described in the README.
-String? clientId = "rayk@techie.com";
+String? clientId;
 
 /// To run this example, replace this value with your server client ID, and/or
 /// update the relevant configuration files, as described in the README.
-String? serverClientId = "rayk@techie.com";
+String? serverClientId;
 
 /// The scopes required by this application.
 // #docregion CheckAuthorization
@@ -52,24 +53,33 @@ class _MenuItemGoogleDriveDemoWidgetState
   @override
   void initState() {
     super.initState();
+    _initApp();
+  }
 
-    // #docregion Setup
+  Future<void> _initApp() async {
+    // 1. Initialize Firebase only if it hasn't been done yet
+    if (Firebase.apps.isEmpty) {
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+
+    // 2. Setup Google Sign In
+    // Note: If 'instance' and 'initialize' cause errors,
+    // we can switch to the standard 'GoogleSignIn()' constructor.
     final GoogleSignIn signIn = GoogleSignIn.instance;
     unawaited(
-      signIn.initialize(clientId: clientId, serverClientId: serverClientId).then((
-        _,
-      ) {
-        signIn.authenticationEvents
-            .listen(_handleAuthenticationEvent)
-            .onError(_handleAuthenticationError);
+      signIn
+          .initialize(clientId: clientId, serverClientId: serverClientId)
+          .then((_) {
+            signIn.authenticationEvents
+                .listen(_handleAuthenticationEvent)
+                .onError(_handleAuthenticationError);
 
-        /// This example always uses the stream-based approach to determining
-        /// which UI state to show, rather than using the future returned here,
-        /// if any, to conditionally skip directly to the signed-in state.
-        signIn.attemptLightweightAuthentication();
-      }),
+            signIn.attemptLightweightAuthentication();
+          }),
     );
-    // #enddocregion Setup
   }
 
   Future<void> _handleAuthenticationEvent(
