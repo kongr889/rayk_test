@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'item_google_drive_demo_web_wrapper.dart' as web;
 // import 'menu_base.dart';
 import 'firebase_options.dart';
+import 'menu_utils.dart';
 
 /// To run this example, replace this value with your client ID, and/or
 /// update the relevant configuration files, as described in the README.
@@ -53,6 +54,9 @@ class _MenuItemGoogleDriveDemoWidgetState
   @override
   void initState() {
     super.initState();
+    logger.i(
+      '(_MenuItemGoogleDriveDemoWidgetState.initState) todo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    );
     _initApp();
   }
 
@@ -361,6 +365,10 @@ class _MenuItemGoogleDriveDemoWidgetState
 
   /// Returns the list of widgets to include if the user is not authenticated.
   List<Widget> _buildUnauthenticatedWidgets() {
+    developer.log(
+      'Info: (_buildUnauthenticatedWidgets) entering method to return sign-in screen.',
+    );
+
     return <Widget>[
       const Text('You are not currently signed in.'),
       // #docregion ExplicitSignIn
@@ -375,7 +383,7 @@ class _MenuItemGoogleDriveDemoWidgetState
               // #docregion ExplicitSignIn
             }
           },
-          child: const Text('SIGN IN'),
+          child: const Text('SIGN IN 1'),
         )
       else ...<Widget>[
         if (kIsWeb)
